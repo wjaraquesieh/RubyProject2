@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  total: 9.99
+  taxes: 9.99
+  email: MyString
+  user: one
+  delivery: one
+  shipping_address: one
+
+two:
+  total: 9.99
+  taxes: 9.99
+  email: MyString
+  user: two
+  delivery: two
+  shipping_address: two
