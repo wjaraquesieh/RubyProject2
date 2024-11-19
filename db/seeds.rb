@@ -7,3 +7,33 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+require 'csv'
+
+# Clean all the data
+Category.destroy_all
+Delivery.destrot_all
+PaymentType.destrot_all
+ProductType.destrot_all
+Profile.destrot_all
+Status.destrot_all
+
+# Loop to get the information
+CSV.foreach('db/csv/category.csv', headers: true) do |row|
+  Category.create(description: row['description'])
+end
+CSV.foreach('db/csv/delivery.csv', headers: true) do |row|
+  Delivery.create(description: row['description'])
+end
+CSV.foreach('db/csv/paymentType.csv', headers: true) do |row|
+  PaymentType.create(name: row['name'])
+end
+CSV.foreach('db/csv/productType.csv', headers: true) do |row|
+  ProductType.create(description: row['description'])
+end
+CSV.foreach('db/csv/profile.csv', headers: true) do |row|
+  Profile.create(name: row['name'])
+end
+CSV.foreach('db/csv/status.csv', headers: true) do |row|
+  Status.create(name: row['name'])
+end
