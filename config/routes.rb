@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "login/register"
+  get "login/index"
   get "payment_types/index"
   get "payment_types/show"
   get "deliveries/index"
@@ -28,4 +30,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root "home#index"
+  get "login", to: "login#index"
+  get "register", to: "login#register"
 end
