@@ -3,89 +3,47 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h2 class="text-center mb-4">Register</h2>
-        <form action="/register" method="POST">
-          <!-- Name Input -->
-          <div class="mb-3">
-            <label for="name" class="form-label">Full Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              name="name"
-              placeholder="Enter your First and Last name"
-              required
-            />
-          </div>
-          <!-- Username Input -->
-          <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input
-              type="text"
-              class="form-control"
-              id="username"
-              name="username"
-              placeholder="Enter your username"
-              required
-            />
-          </div>
-          <!-- Email Input -->
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <!-- Phone Input -->
-          <div class="mb-3">
-            <label for="phone" class="form-label">Phone</label>
-            <input
-              type="phone"
-              class="form-control"
-              id="phone"
-              name="phone"
-              placeholder="Enter your phone"
-              required
-            />
+        <%= form_with url: register_path, method: :post, html: { onsubmit: 'return validatePasswords()' }, model: User.new do |f| %>
+          <div class="form-group">
+            <%= f.label :name, 'Full Name' %>
+            <%= f.text_field :name, class: 'form-control', required: true %>
           </div>
 
-          <!-- Password Input -->
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              required
-            />
+          <div class="form-group">
+            <%= f.label :username, 'Username' %>
+            <%= f.text_field :username, class: 'form-control', required: true %>
           </div>
 
-          <!-- Password Confirmation Input -->
-          <div class="mb-3">
-            <label for="password2" class="form-label">Confirm your Password</label>
-            <input
-              type="password2"
-              class="form-control"
-              id="password2"
-              name="password2"
-              placeholder="Confirm your password"
-              required
-            />
+          <div class="form-group">
+            <%= f.label :email, 'Email' %>
+            <%= f.email_field :email, class: 'form-control', required: true %>
           </div>
 
-          <!-- Buttons -->
-          <div class="d-flex justify-content-between">
-            <!-- Submit Form Button -->
-            <button type="submit" class="btn btn-primary">Create an Account</button>
-
+          <div class="form-group">
+            <%= f.label :phone, 'Phone' %>
+            <%= f.telephone_field :phone, class: 'form-control' %>
           </div>
-        </form>
+
+          <div class="form-group">
+            <%= f.label :password, 'Password' %>
+            <%= f.password_field :password, class: 'form-control', required: true %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :password_confirmation, 'Confirm Password' %>
+            <%= f.password_field :password_confirmation, class: 'form-control', required: true %>
+          </div>
+
+          <% if current_user&.profile_id == 1 %>
+            <!-- Only show this if the user is an admin -->
+            <div class="form-group">
+              <%= f.label :profile_id, 'Profile' %>
+              <%= f.select :profile_id, Profile.all.collect { |p| [p.name, p.id] }, { prompt: 'Select Profile' }, class: 'form-control' %>
+            </div>
+          <% end %>
+
+          <%= f.submit 'Register', class: 'btn btn-primary' %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -94,3 +52,17 @@
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
   ></script>
+
+  <script>
+    // JavaScript function to validate password and confirm password
+    function validateForm(event) {
+      const password = document.getElementById("password").value;
+      const passwordConfirm = document.getElementById("passwordConfirm").value;
+
+      // Check if passwords match
+      if (password !== passwordConfirm) {
+        event.preventDefault(); // Prevent form submission
+        alert("Passwords do not match. Please try again.");
+      }
+    }
+  </script>
