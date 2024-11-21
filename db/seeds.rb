@@ -12,11 +12,11 @@ require 'csv'
 
 # Clean all the data
 Category.destroy_all
-Delivery.destrot_all
-PaymentType.destrot_all
-ProductType.destrot_all
-Profile.destrot_all
-Status.destrot_all
+Delivery.destroy_all
+PaymentType.destroy_all
+ProductType.destroy_all
+Profile.destroy_all
+Status.destroy_all
 
 # Loop to get the information
 CSV.foreach('db/csv/category.csv', headers: true) do |row|
