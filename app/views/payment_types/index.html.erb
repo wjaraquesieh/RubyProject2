@@ -55,7 +55,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <%= form_with url: paymentType_path(:id), method: :patch, id: "editPaymentTypeForm", local: true do |f| %>
+        <%= form_with url: payment_type_path(:id), method: :patch, id: "editPaymentTypeForm", local: true do |f| %>
           <div class="mb-3">
             <%= f.label :description, "PaymentType Name", class: "form-label" %>
             <%= f.text_field :description, class: "form-control", id: "paymentTypeNameInput" %>
@@ -71,15 +71,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Delete Category</h5>
+        <h5 class="modal-title" id="deleteModalLabel">Delete payment type</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete the category <strong id="deleteCategoryName"></strong>?</p>
+        <p>Are you sure you want to delete the payment type <strong id="deletePaymentTypeName"></strong>?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <%= button_to "Delete", category_path(:id), method: :delete, id: "deleteCategoryButton", class: "btn btn-danger" %>
+        <%= button_to "Delete", payment_type_path(:id), method: :delete, id: "deletePaymentTypeButton", class: "btn btn-danger" %>
       </div>
     </div>
   </div>
@@ -92,26 +92,26 @@
     const editModal = document.getElementById("editModal");
     editModal.addEventListener("show.bs.modal", (event) => {
       const button = event.relatedTarget;
-      const categoryId = button.getAttribute("data-category-id");
-      const categoryName = button.getAttribute("data-category-name");
+      const paymentId = button.getAttribute("data-payment-id");
+      const paymentName = button.getAttribute("data-payment-name");
 
       // Populate form action and input
-      const form = document.getElementById("editCategoryForm");
-      form.action = `/categories/${categoryId}`;
-      document.getElementById("categoryNameInput").value = categoryName;
+      const form = document.getElementById("editPaymentTypeForm");
+      form.action = `/paymentType/${paymentId}`;
+      document.getElementById("paymentNameInput").value = paymentName;
     });
 
     // Delete Modal
     const deleteModal = document.getElementById("deleteModal");
     deleteModal.addEventListener("show.bs.modal", (event) => {
       const button = event.relatedTarget;
-      const categoryId = button.getAttribute("data-category-id");
-      const categoryName = button.getAttribute("data-category-name");
+      const paymentId = button.getAttribute("data-payment-id");
+      const paymentName = button.getAttribute("data-payment-name");
 
       // Populate delete button action and category name
-      const deleteButton = document.getElementById("deleteCategoryButton");
-      deleteButton.formAction = `/categories/${categoryId}`;
-      document.getElementById("deleteCategoryName").textContent = categoryName;
+      const deleteButton = document.getElementById("deletePaymentButton");
+      deleteButton.formAction = `/paymentType/${categoryId}`;
+      document.getElementById("deleteCategoryName").textContent = paymentName;
     });
   });
 

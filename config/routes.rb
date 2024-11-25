@@ -36,7 +36,8 @@ Rails.application.routes.draw do
   post "register", to: "login#newRegister"
   # Maintainer
   resources :categories, only: [ :index, :update, :destroy ]
-  # get "paymentTypes", to: "paymentTypes#index"
+  resources :payment_type, only: [ :index, :update, :destroy ]
+
   # get "profiles", to: "profiles#index"
   # get "delivery", to: "delivery#index"
   # get "productType", to: "productType#index"
