@@ -32,14 +32,16 @@ Rails.application.routes.draw do
 
   root "home#index"
   get "login", to: "login#index"
+  post "login", to: "login#login"
   get "register", to: "login#register"
   post "register", to: "login#newRegister"
   # Maintainer
   resources :categories, only: [ :index, :update, :destroy ]
   resources :payment_type, only: [ :index, :update, :destroy ]
+  resources :users, only: [ :index, :update ]
+  resources :product_type, only: [ :index, :update, :destroy ]
 
   # get "profiles", to: "profiles#index"
   # get "delivery", to: "delivery#index"
   # get "productType", to: "productType#index"
-  # get "users", to: "users#index"
 end
