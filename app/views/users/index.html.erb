@@ -1,2 +1,119 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<div class="container">
+  <h1 class="mt-5">Users</h1>
+  <table class="table table-striped table-hover mt-3">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col">User Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each_with_index do |user, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= user.name %></td>
+          <td><%= user.user_name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.phone %></td>
+          <td>
+            <!-- Edit Button -->
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#editModal"
+              data-user-id="<%= user.id %>"
+              data-user-email="<%= user.email %>"
+              data-user-phone="<%= user.phone %>"
+              data-user-name="<%= user.name %>"
+              data-user-userName="<%= user.user_name %>"
+            >
+              Edit
+            </button>
+
+            <!-- Delete Button -->
+            <button
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-user-id="<%= user.id %>"
+              data-user-name="<%= user.name %>"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: users_path(:id), method: :patch, id: "editUserForm", local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :email, "User Email", class: "form-label" %>
+            <%= f.text_field :email, class: "form-control", id: "userEmailInput" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :phone, "User Phone", class: "form-label" %>
+            <%= f.text_field :phone, class: "form-control", id: "userPhoneInput" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :name, "Name", class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", id: "userInput" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :user_name, "User Name", class: "form-label" %>
+            <%= f.text_field :user_name, class: "form-control", id: "userNameInput" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :profile_id, 'Profile' %>
+            <%= f.select :profile_id, Profile.all.collect { |p| [p.name, p.id] }, { prompt: 'Select Profile' }, class: 'form-control' %>
+          </div>
+          <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Edit Modal
+    const editModal = document.getElementById("editModal");
+    editModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const userId = button.getAttribute("data-user-id");
+      const userEmail = button.getAttribute("data-user-email");
+      const userPhone = button.getAttribute("data-user-phone");
+      const userName = button.getAttribute("data-user-name");
+      const userUserName = button.getAttribute("data-user-userName");
+
+
+      console.log(userId + " " + userEmail + " " + userPhone + " " + userName + " " + userUserName)
+      // Populate form action and input
+      const form = document.getElementById("editUserForm");
+      form.action = `/users/${userId}`;
+      document.getElementById("userEmailInput").value = userEmail;
+      document.getElementById("userPhoneInput").value = userPhone;
+      document.getElementById("userInput").value = userName;
+      document.getElementById("userNameInput").value = userUserName;
+    });
+
+  });
+
+</script>
