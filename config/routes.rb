@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   get "users/index"
   get "users/show"
   get "categories/index"
-  get "categories/show"
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -35,6 +34,11 @@ Rails.application.routes.draw do
   get "login", to: "login#index"
   get "register", to: "login#register"
   post "register", to: "login#newRegister"
-  # Mantainers
-  get "category", to: "categories#index"
+  # Maintainer
+  resources :categories, only: [ :index, :update, :destroy ]
+  # get "paymentTypes", to: "paymentTypes#index"
+  # get "profiles", to: "profiles#index"
+  # get "delivery", to: "delivery#index"
+  # get "productType", to: "productType#index"
+  # get "users", to: "users#index"
 end

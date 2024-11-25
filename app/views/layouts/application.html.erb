@@ -44,30 +44,30 @@
           </ul>
           <!-- Align login to the right -->
 
-          <%# if current_user&.profile_id == 1 %>
           <ul class="navbar-nav ms-auto">
+            <%# if current_user&.profile_id == 1 %>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#maintainersMenu" role="button" aria-expanded="false" aria-controls="maintainersMenu">
+                  Maintainers
+                </a>
+                <div class="collapse" id="maintainersMenu">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <a href="/category" class="dropdown-item">Categories</a>
+                    </li>
+                    <li class="list-group-item">
+                      <a href="/product-types" class="dropdown-item">Product Types</a>
+                    </li>
+                    <li class="list-group-item">
+                      <a href="/deliveries" class="dropdown-item">Deliveries</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            <%# end %>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="#maintainersMenu" role="button" aria-expanded="false" aria-controls="maintainersMenu">
-                Maintainers
-              </a>
-              <div class="collapse" id="maintainersMenu">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <a href="/category" class="dropdown-item">Categories</a>
-                  </li>
-                  <li class="list-group-item">
-                    <a href="/product-types" class="dropdown-item">Product Types</a>
-                  </li>
-                  <li class="list-group-item">
-                    <a href="/deliveries" class="dropdown-item">Deliveries</a>
-                  </li>
-                </ul>
-              </div>
+              <a class="nav-link" href="/user">Users</a>
             </li>
-          </ul>
-          <%# end %>
-
-          <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a class="nav-link" href="/login">
                 <!-- Add an icon for login -->
@@ -75,6 +75,7 @@
               </a>
             </li>
           </ul>
+
         </div>
       </div>
     </nav>
