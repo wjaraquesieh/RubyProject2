@@ -7,7 +7,7 @@ class LoginController < ApplicationController
 
   def newRegister
     user = User.new(user_params)
-
+    puts user
     # Set profileId to 2 for normal users
     user.profile_id = current_user&.profile_id == 1 ? params[:user][:profile_id] : 2
 
@@ -22,6 +22,6 @@ class LoginController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :username, :email, :phone, :password)
+    params.require(:user).permit(:name, :user_name, :password, :email, :phone)
   end
 end
