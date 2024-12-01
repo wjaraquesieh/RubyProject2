@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mt-5">
+    <h1>Product Types</h1>
+    <%# <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+      Add Product Types
+    </button> %>
+  </div>
+  <table class="table table-striped table-hover mt-3">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @productTypes.each_with_index do |product, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= product.description %></td>
+          <td>
+            <!-- Edit Button -->
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#editModal"
+              data-product-id="<%= product.id %>"
+              data-product-name="<%= product.description %>"
+            >
+              Edit
+            </button>
+
+            <!-- Delete Button -->
+            <button
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-product-id="<%= product.id %>"
+              data-product-name="<%= product.description %>"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="d-flex align-items-center justify-content-center">
+    <%= paginate @productTypes %>
+  </div>
+</div>
+
+
+<!-- Create ProductType Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">Add New Product Types</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: product_type_path(:id), method: :post, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :description, "Product Types Name", class: "form-label" %>
+            <%= f.text_field :description, class: "form-control", id: "newProductTypeNameInput", required: true %>
+          </div>
+          <%= f.submit "Add Product Types", class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Product Types</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: product_type_path(:id), method: :patch, id: "editProductTypeForm", local: true do |f| %>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <div class="mb-3">
+            <%= f.label :description, "Product Types Name", class: "form-label" %>
+            <%= f.text_field :description, class: "form-control", id: "ProductTypeNameInput" %>
+          </div>
+          <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete Product Types</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the Product Types <strong id="deleteProductTypeName"></strong>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <%= form_with url: product_type_path(:id), method: :delete, id: "deleteProductTypeForm", local: true do %>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <%= submit_tag "Delete", class: "btn btn-danger" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Edit Modal
+    const editModal = document.getElementById("editModal");
+    editModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const ProductTypeId = button.getAttribute("data-ProductType-id");
+      const ProductTypeName = button.getAttribute("data-ProductType-name");
+
+      // Populate form action and input
+      const form = document.getElementById("editProductTypeForm");
+      form.action = `/product_type/${ProductTypeId}`;
+      document.getElementById("ProductTypeNameInput").value = ProductTypeName;
+    });
+
+    // Delete Modal
+    const deleteModal = document.getElementById("deleteModal");
+    deleteModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const ProductTypeId = button.getAttribute("data-ProductType-id");
+      const ProductTypeName = button.getAttribute("data-ProductType-name");
+
+      // Populate delete button action and ProductType name
+      const deleteForm = document.getElementById("deleteProductTypeForm");
+      deleteForm.action = `/product_type/${ProductTypeId}`;
+      document.getElementById("deleteProductTypeName").textContent = ProductTypeName;
+    });
+  });
+
+</script>
