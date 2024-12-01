@@ -5,13 +5,10 @@ Rails.application.routes.draw do
   get "login/register"
   get "login/index"
   get "payment_types/index"
-  get "payment_types/show"
   get "deliveries/index"
-  get "deliveries/show"
   get "statuses/index"
   get "statuses/show"
   get "orders/index"
-  get "orders/show"
   get "profiles/index"
   get "profiles/show"
   get "users/index"
@@ -38,10 +35,10 @@ Rails.application.routes.draw do
   post "register", to: "login#newRegister"
   # Maintainer
   resources :categories, only: [ :index, :create, :update, :destroy ]
-  resources :payment_type, only: [ :index, :create, :update, :destroy ]
   resources :users, only: [ :index, :update ]
-  resources :product_type, only: [ :index, :create, :update, :destroy ]
   resources :deliveries, only: [ :index, :create, :update, :destroy ]
+  resources :product_type, only: [ :index, :create, :update, :destroy ]
+  resources :payment_types, only: [ :index, :create, :update, :destroy ]
 
   # get "profiles", to: "profiles#index"
 end

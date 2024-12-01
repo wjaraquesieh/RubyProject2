@@ -1,5 +1,11 @@
 <div class="container">
-  <h1 class="mt-5">Payment Types</h1>
+  <div class="d-flex justify-content-between align-items-center mt-5">
+    <h1>Payment Types</h1>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+      Add Payment Types
+    </button>
+  </div>
+
   <table class="table table-striped table-hover mt-3">
     <thead>
       <tr>
@@ -12,7 +18,7 @@
       <% @paymentTypes.each_with_index do |payment, index| %>
         <tr>
           <td><%= index + 1 %></td>
-          <td><%= payment.description %></td>
+          <td><%= payment.name %></td>
           <td>
             <!-- Edit Button -->
             <button
@@ -20,7 +26,7 @@
               data-bs-toggle="modal"
               data-bs-target="#editModal"
               data-payment-id="<%= payment.id %>"
-              data-payment-name="<%= payment.description %>"
+              data-payment-name="<%= payment.name %>"
             >
               Edit
             </button>
@@ -31,7 +37,7 @@
               data-bs-toggle="modal"
               data-bs-target="#deleteModal"
               data-payment-id="<%= payment.id %>"
-              data-payment-name="<%= payment.description %>"
+              data-payment-name="<%= payment.name %>"
             >
               Delete
             </button>
@@ -47,6 +53,28 @@
 </div>
 
 
+<!-- Create Category Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">Add New Payment Type</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: payment_types_path, method: :post, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :name, "Payment Type Name", class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", id: "newPaymentTypeNameInput", required: true %>
+          </div>
+          <%= f.submit "Add Payment Type", class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -55,10 +83,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <%= form_with url: payment_type_path(:id), method: :patch, id: "editPaymentTypeForm", local: true do |f| %>
+        <%= form_with url: payment_types_path(:id), method: :patch, id: "editPaymentTypeForm", local: true do |f| %>
           <div class="mb-3">
-            <%= f.label :description, "PaymentType Name", class: "form-label" %>
-            <%= f.text_field :description, class: "form-control", id: "paymentTypeNameInput" %>
+            <%= f.label :name, "PaymentType Name", class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", id: "paymentTypeNameInput" %>
           </div>
           <%= f.submit "Save Changes", class: "btn btn-primary" %>
         <% end %>
@@ -79,7 +107,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <%= button_to "Delete", payment_type_path(:id), method: :delete, id: "deletePaymentTypeButton", class: "btn btn-danger" %>
+        <%= form_with url: payment_types_path(:id), method: :delete, id: "deletePaymentTypeForm", local: true do %>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <%= submit_tag "Delete", class: "btn btn-danger" %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -97,7 +128,7 @@
 
       // Populate form action and input
       const form = document.getElementById("editPaymentTypeForm");
-      form.action = `/paymentType/${paymentId}`;
+      form.action = `/payment_types/${paymentId}`;
       document.getElementById("paymentNameInput").value = paymentName;
     });
 
@@ -109,9 +140,9 @@
       const paymentName = button.getAttribute("data-payment-name");
 
       // Populate delete button action and category name
-      const deleteButton = document.getElementById("deletePaymentButton");
-      deleteButton.formAction = `/paymentType/${categoryId}`;
-      document.getElementById("deleteCategoryName").textContent = paymentName;
+      const deleteButton = document.getElementById("deletePaymentTypeForm");
+      deleteButton.action = `/payment_types/${paymentId}`;
+      document.getElementById("deletePaymentTypeName").textContent = paymentName;
     });
   });
 
