@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :deliveries, only: [ :index, :create, :update, :destroy ]
   resources :product_type, only: [ :index, :create, :update, :destroy ]
   resources :payment_types, only: [ :index, :create, :update, :destroy ]
+  resources :profiles, only: [ :index, :create, :update, :destroy ]
 
   # get "profiles", to: "profiles#index"
 end

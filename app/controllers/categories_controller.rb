@@ -14,7 +14,7 @@ class CategoriesController < ApplicationController
       redirect_to categories_path, notice: "Category created successfully."
     else
       flash.now[:alert] = "There was an error creating the category."
-      render :register
+      render :index
     end
   end
 
