@@ -1,11 +1,10 @@
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mt-5">
-    <h1>Categories</h1>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
-      Add Category
-    </button>
+    <h1>Product Types</h1>
+    <%# <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+      Add Product Types
+    </button> %>
   </div>
-
   <table class="table table-striped table-hover mt-3">
     <thead>
       <tr>
@@ -15,18 +14,18 @@
       </tr>
     </thead>
     <tbody>
-      <% @categories.each_with_index do |category, index| %>
+      <% @productTypes.each_with_index do |product, index| %>
         <tr>
           <td><%= index + 1 %></td>
-          <td><%= category.description %></td>
+          <td><%= product.description %></td>
           <td>
             <!-- Edit Button -->
             <button
               class="btn btn-primary"
               data-bs-toggle="modal"
               data-bs-target="#editModal"
-              data-category-id="<%= category.id %>"
-              data-category-name="<%= category.description %>"
+              data-product-id="<%= product.id %>"
+              data-product-name="<%= product.description %>"
             >
               Edit
             </button>
@@ -36,8 +35,8 @@
               class="btn btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#deleteModal"
-              data-category-id="<%= category.id %>"
-              data-category-name="<%= category.description %>"
+              data-product-id="<%= product.id %>"
+              data-product-name="<%= product.description %>"
             >
               Delete
             </button>
@@ -48,25 +47,26 @@
   </table>
 
   <div class="d-flex align-items-center justify-content-center">
-    <%= paginate @categories %>
+    <%= paginate @productTypes %>
   </div>
 </div>
 
-<!-- Create Category Modal -->
+
+<!-- Create ProductType Modal -->
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="createModalLabel">Add New Category</h5>
+        <h5 class="modal-title" id="createModalLabel">Add New Product Types</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <%= form_with url: categories_path, method: :post, local: true do |f| %>
+        <%= form_with url: product_type_path(:id), method: :post, local: true do |f| %>
           <div class="mb-3">
-            <%= f.label :description, "Category Name", class: "form-label" %>
-            <%= f.text_field :description, class: "form-control", id: "newCategoryNameInput", required: true %>
+            <%= f.label :description, "Product Types Name", class: "form-label" %>
+            <%= f.text_field :description, class: "form-control", id: "newProductTypeNameInput", required: true %>
           </div>
-          <%= f.submit "Add Category", class: "btn btn-success" %>
+          <%= f.submit "Add Product Types", class: "btn btn-success" %>
         <% end %>
       </div>
     </div>
@@ -78,15 +78,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit Category</h5>
+        <h5 class="modal-title" id="editModalLabel">Edit Product Types</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <%= form_with url: category_path(:id), method: :patch, id: "editCategoryForm", local: true do |f| %>
+        <%= form_with url: product_type_path(:id), method: :patch, id: "editProductTypeForm", local: true do |f| %>
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
           <div class="mb-3">
-            <%= f.label :description, "Category Name", class: "form-label" %>
-            <%= f.text_field :description, class: "form-control", id: "categoryNameInput" %>
+            <%= f.label :description, "Product Types Name", class: "form-label" %>
+            <%= f.text_field :description, class: "form-control", id: "ProductTypeNameInput" %>
           </div>
           <%= f.submit "Save Changes", class: "btn btn-primary" %>
         <% end %>
@@ -99,15 +99,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Delete Category</h5>
+        <h5 class="modal-title" id="deleteModalLabel">Delete Product Types</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete the category <strong id="deleteCategoryName"></strong>?</p>
+        <p>Are you sure you want to delete the Product Types <strong id="deleteProductTypeName"></strong>?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <%= form_with url: category_path(:id), method: :delete, id: "deleteCategoryForm", local: true do %>
+        <%= form_with url: product_type_path(:id), method: :delete, id: "deleteProductTypeForm", local: true do %>
           <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
           <%= submit_tag "Delete", class: "btn btn-danger" %>
         <% end %>
@@ -123,26 +123,26 @@
     const editModal = document.getElementById("editModal");
     editModal.addEventListener("show.bs.modal", (event) => {
       const button = event.relatedTarget;
-      const categoryId = button.getAttribute("data-category-id");
-      const categoryName = button.getAttribute("data-category-name");
+      const ProductTypeId = button.getAttribute("data-ProductType-id");
+      const ProductTypeName = button.getAttribute("data-ProductType-name");
 
       // Populate form action and input
-      const form = document.getElementById("editCategoryForm");
-      form.action = `/categories/${categoryId}`;
-      document.getElementById("categoryNameInput").value = categoryName;
+      const form = document.getElementById("editProductTypeForm");
+      form.action = `/product_type/${ProductTypeId}`;
+      document.getElementById("ProductTypeNameInput").value = ProductTypeName;
     });
 
     // Delete Modal
     const deleteModal = document.getElementById("deleteModal");
     deleteModal.addEventListener("show.bs.modal", (event) => {
       const button = event.relatedTarget;
-      const categoryId = button.getAttribute("data-category-id");
-      const categoryName = button.getAttribute("data-category-name");
+      const ProductTypeId = button.getAttribute("data-ProductType-id");
+      const ProductTypeName = button.getAttribute("data-ProductType-name");
 
-      // Populate delete button action and category name
-      const deleteForm = document.getElementById("deleteCategoryForm");
-      deleteForm.action = `/categories/${categoryId}`;
-      document.getElementById("deleteCategoryName").textContent = categoryName;
+      // Populate delete button action and ProductType name
+      const deleteForm = document.getElementById("deleteProductTypeForm");
+      deleteForm.action = `/product_type/${ProductTypeId}`;
+      document.getElementById("deleteProductTypeName").textContent = ProductTypeName;
     });
   });
 

@@ -4,12 +4,32 @@ class CategoriesController < ApplicationController
                   .page(params[:page]).per(15)
   end
 
+  def create
+    unless params[:category]
+      params[:category] = { description: params[:description] }
+    end
+    @category = Category.new(category_params)
+
+    if @category.save
+      redirect_to categories_path, notice: "Category created successfully."
+    else
+      flash.now[:alert] = "There was an error creating the category."
+      render :index
+    end
+  end
+
   def update
     @category = Category.find(params[:id])
+
+    unless params[:category]
+      params[:category] = { description: params[:description] }
+    end
+
     if @category.update(category_params)
       redirect_to categories_path, notice: "Category updated successfully."
     else
-      redirect_to categories_path, alert: "Error updating category."
+      flash[:alert] = "Error updating category."
+      render :index
     end
   end
 

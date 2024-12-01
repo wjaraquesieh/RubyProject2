@@ -1,2 +1,149 @@
-<h1>Profiles#index</h1>
-<p>Find me in app/views/profiles/index.html.erb</p>
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mt-5">
+    <h1>Profile</h1>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+      Add Profile
+    </button>
+  </div>
+
+  <table class="table table-striped table-hover mt-3">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @profiles.each_with_index do |profile, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= profile.name %></td>
+          <td>
+            <!-- Edit Button -->
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#editModal"
+              data-profile-id="<%= profile.id %>"
+              data-profile-name="<%= profile.name %>"
+            >
+              Edit
+            </button>
+
+            <!-- Delete Button -->
+            <button
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              data-profile-id="<%= profile.id %>"
+              data-profile-name="<%= profile.name %>"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="d-flex align-items-center justify-content-center">
+    <%= paginate @profiles %>
+  </div>
+</div>
+
+<!-- Create Profile Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">Add New Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: profiles_path, method: :post, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :name, "Profile Name", class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", id: "newProfileNameInput", required: true %>
+          </div>
+          <%= f.submit "Add Profile", class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: profiles_path(:id), method: :patch, id: "editprofileForm", local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :name, "profile Name", class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", id: "profileNameInput" %>
+          </div>
+          <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the profile <strong id="deleteprofileName"></strong>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <%= form_with url: profiles_path(:id), method: :delete, id: "deleteprofileButton", local: true do %>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <%= submit_tag "Delete", class: "btn btn-danger" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Edit Modal
+    const editModal = document.getElementById("editModal");
+    editModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const profileId = button.getAttribute("data-profile-id");
+      const profileName = button.getAttribute("data-profile-name");
+
+      // Populate form action and input
+      const form = document.getElementById("editprofileForm");
+      form.action = `/profiles/${profileId}`;
+      document.getElementById("profileNameInput").value = profileName;
+    });
+
+    // Delete Modal
+    const deleteModal = document.getElementById("deleteModal");
+    deleteModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const profileId = button.getAttribute("data-profile-id");
+      const profileName = button.getAttribute("data-profile-name");
+
+      // Populate delete button action and profile name
+      const deleteButton = document.getElementById("deleteprofileButton");
+      deleteButton.formAction = `/profiles/${profileId}`;
+      document.getElementById("deleteprofileName").textContent = profileName;
+    });
+  });
+
+</script>

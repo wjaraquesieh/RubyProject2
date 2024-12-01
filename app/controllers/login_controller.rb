@@ -5,6 +5,10 @@ class LoginController < ApplicationController
   def register
   end
 
+  def login
+    @user = Users.all
+  end
+
   def newRegister
     user = User.new(user_params)
 
@@ -22,6 +26,6 @@ class LoginController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :username, :email, :phone, :password)
+    params.require(:user).permit(:name, :user_name, :password, :email, :phone)
   end
 end
