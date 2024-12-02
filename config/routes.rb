@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "products/index"
   get "product_type/index"
   get "contact/index"
   post "login/newRegister"
@@ -33,6 +34,9 @@ Rails.application.routes.draw do
   post "login", to: "login#login"
   get "register", to: "login#register"
   post "register", to: "login#newRegister"
+
+  resources :products, only: [ :index, :new, :create, :show ]
+
   # Maintainer
   resources :categories, only: [ :index, :create, :update, :destroy ]
   resources :users, only: [ :index, :update ]
@@ -40,6 +44,4 @@ Rails.application.routes.draw do
   resources :product_type, only: [ :index, :create, :update, :destroy ]
   resources :payment_types, only: [ :index, :create, :update, :destroy ]
   resources :profiles, only: [ :index, :create, :update, :destroy ]
-
-  # get "profiles", to: "profiles#index"
 end

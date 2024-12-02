@@ -1,0 +1,46 @@
+<div class="container mt-5">
+  <h1>Add New Product</h1>
+  <%= form_with model: @product, url: products_path, local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :name, "Name", class: "form-label" %>
+      <%= f.text_field :name, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :price, "Price", class: "form-label" %>
+      <%= f.number_field :price, class: "form-control", step: "0.01", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :currency, "Currency", class: "form-label" %>
+      <%= f.text_field :currency, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :stock, "Stock", class: "form-label" %>
+      <%= f.number_field :stock, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :description, "Description", class: "form-label" %>
+      <%= f.text_area :description, class: "form-control", rows: 4, required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :category_id, "Category", class: "form-label" %>
+      <%= f.select :category_id, @categories.map { |c| [c.description, c.id] }, { prompt: "Select a category" }, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :product_type_id, "Product Type", class: "form-label" %>
+      <%= f.select :product_type_id, @product_types.map { |pt| [pt.description, pt.id] }, { prompt: "Select a product type" }, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :image, "Product Image", class: "form-label" %>
+      <%= f.file_field :image, class: "form-control" %>
+    </div>
+
+    <%= f.submit "Create Product", class: "btn btn-primary" %>
+  <% end %>
+</div>
