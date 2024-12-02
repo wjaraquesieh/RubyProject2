@@ -7,7 +7,6 @@ class CreateProducts < ActiveRecord::Migration[7.2]
       t.string :image
       t.text :description
       t.integer :stock
-      t.datetime :date
       t.references :product_type, null: false, foreign_key: true
       t.references :category, null: false, foreign_key: true
 

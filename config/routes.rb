@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "products/edit"
+  get "products/show"
   get "products/index"
   get "product_type/index"
   get "contact/index"
@@ -35,7 +37,7 @@ Rails.application.routes.draw do
   get "register", to: "login#register"
   post "register", to: "login#newRegister"
 
-  resources :products, only: [ :index, :new, :create, :show ]
+  resources :products, only: [ :index, :new, :create, :show, :edit, :destroy ]
 
   # Maintainer
   resources :categories, only: [ :index, :create, :update, :destroy ]

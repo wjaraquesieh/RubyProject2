@@ -4,7 +4,7 @@
     <%= link_to "Back to Products", products_path(), class: "btn btn-default" %>
   </div>
 
-  <h1>Add New Product</h1>
+  <h1>Edit Product</h1>
   <%= form_with model: @product, url: products_path, local: true do |f| %>
     <div class="mb-3">
       <%= f.label :name, "Name", class: "form-label" %>
@@ -46,6 +46,8 @@
       <%= f.file_field :image, class: "form-control" %>
     </div>
 
-    <%= f.submit "Create Product", class: "btn btn-primary" %>
+    <div class="mb-3">
+      <%= f.submit "Create Product", class: "btn btn-primary" %>
+    </div>
   <% end %>
 </div>
