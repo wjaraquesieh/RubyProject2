@@ -1,0 +1,47 @@
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.catalog-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.catalog-card img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.catalog-card .catalog-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.catalog-card .catalog-name:hover {
+  text-decoration: underline;
+}
+
+.catalog-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.add-to-cart-button {
+  background-color: #004085;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+  background-color: #002752;
+}
