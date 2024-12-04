@@ -1,0 +1,55 @@
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.catalog-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.catalog-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.catalog-card .catalog-name {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.catalog-card .catalog-name:hover {
+  text-decoration: underline;
+}
+
+.catalog-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.add-to-cart-button {
+  background-color: #004085;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.add-to-cart-button:hover {
+  background-color: #002752;
+}

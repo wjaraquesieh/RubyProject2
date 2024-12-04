@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "carts/add"
+  get "catalog/index"
+  get "catalog/show"
   get "products/edit"
   get "products/show"
   get "products/index"
@@ -32,15 +35,25 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root "home#index"
+
   get "login", to: "login#index"
   post "login", to: "login#login"
   get "register", to: "login#register"
   post "register", to: "login#newRegister"
   get "logout", to: "login#logout"
 
-  resources :products, only: [ :index, :new, :create, :show, :edit, :destroy ]
+  get "catalogs", to: "catalog#index"
+  get "catalog/:id", to: "catalog#show", as: "catalog"
+
+  get "cart", to: "carts#index"
+  post "cart/add", to: "carts#add", as: "cart_add"
+  delete "cart/remove", to: "carts#remove", as: "cart_remove"
+
+  get "/contact", to: "contact#index"
+  post "/contact", to: "contact#send_message"
 
   # Maintainer
+  resources :products, only: [ :index, :new, :create, :show, :edit, :destroy ]
   resources :categories, only: [ :index, :create, :update, :destroy ]
   resources :users, only: [ :index, :update, :destroy ]
   resources :deliveries, only: [ :index, :create, :update, :destroy ]

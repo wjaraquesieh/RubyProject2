@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_02_004715) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_04_173057) do
+  create_table "carts", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -120,6 +135,13 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_004715) do
 
   create_table "statuses", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tax_rates", force: :cascade do |t|
+    t.string "currency_code"
+    t.integer "tax_percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
