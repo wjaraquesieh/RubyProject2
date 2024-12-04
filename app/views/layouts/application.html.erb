@@ -4,6 +4,7 @@
     <title>Makeup</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= javascript_importmap_tags %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -30,20 +31,21 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/products">Products</a>
+              <a class="nav-link" href="/catalogs">Pokemon</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/brands">Brands</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/categories">Categories</a>
+              <a class="nav-link" href="/accessories">Accessories</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/contact">Contact</a>
             </li>
           </ul>
-          <!-- Align login to the right -->
+          <form class="d-flex" action="/search" method="get">
+            <input class="form-control me-2" type="search" name="query" placeholder="Search a product" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
 
+          <!-- Align login to the right -->
           <ul class="navbar-nav ms-auto">
             <% if current_user&.profile_id == 1 %>
               <li class="nav-item">
@@ -111,10 +113,12 @@
               </ul>
             </li>
             <%# shopping cart %>
-            <li>
-              <a class="nav-link" href="/cart">
+            <li id="cart-icon">
+              <a class="dropdown-item" href="/cart">
                 <i class="bi bi-cart"></i>
               </a>
+              <%= link_to 'Cart', cart_path, class: 'cart-link' %>
+              <span class="cart-count"><%= session[:cart]&.size || 0 %></span>
             </li>
           </ul>
 

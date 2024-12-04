@@ -42,10 +42,15 @@ Rails.application.routes.draw do
   post "register", to: "login#newRegister"
   get "logout", to: "login#logout"
 
-  resources :catalog, only: [ :index, :show ]
+  get "catalogs", to: "catalog#index"
+  get "catalog/:id", to: "catalog#show", as: "catalog"
 
   get "cart", to: "carts#index"
   post "cart/add", to: "carts#add", as: "cart_add"
+  delete "cart/remove", to: "carts#remove", as: "cart_remove"
+
+  get "/contact", to: "contact#index"
+  post "/contact", to: "contact#send_message"
 
   # Maintainer
   resources :products, only: [ :index, :new, :create, :show, :edit, :destroy ]
