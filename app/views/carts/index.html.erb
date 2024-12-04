@@ -13,11 +13,11 @@
     <tbody>
       <% @cart_items.each do |item| %>
         <tr>
-          <td><%= link_to image_tag(item.image, alt: item.name, class: "cart-image"), product_path(item) %></td>
-          <td><%= item.name %></td>
-          <td>$<%= item.price %> <%= item.currency %></td>
+          <td><%= link_to image_tag(item.product.image, alt: item.product.name, class: "cart-image"), product_path(item) %></td>
+          <td><%= item.product.name %></td>
+          <td>$<%= item.product.price %> <%= item.product.currency %></td>
           <td>
-            <%= button_to "Remove", cart_remove_path(product_id: item.id), method: :delete, class: "remove-button" %>
+            <%= button_to "Remove", cart_remove_path(product_id: item.product.id), method: :delete %>
           </td>
         </tr>
       <% end %>
