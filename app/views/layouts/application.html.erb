@@ -45,7 +45,7 @@
           <!-- Align login to the right -->
 
           <ul class="navbar-nav ms-auto">
-            <%# if current_user&.profile_id == 1 %>
+            <% if current_user&.profile_id == 1 %>
               <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#maintainersMenu" role="button" aria-expanded="false" aria-controls="maintainersMenu">
                   Maintainers
@@ -71,17 +71,43 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/product">Products</a>
+                <a class="nav-link" href="/products">Products</a>
               </li>
-            <%# end %>
-            <li class="nav-item">
-              <a class="nav-link" href="/users">Users</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/login">
-                <!-- Add an icon for login -->
+              <li class="nav-item">
+                <a class="nav-link" href="/users">Users</a>
+              </li>
+            <% end %>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <i class="bi bi-person"></i>
               </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <% if logged_in? %>
+                  <li>
+                    <a class="dropdown-item" href="/profile">
+                      <i class="bi bi-person-circle"></i> My Profile
+                    </a>
+                  </li>
+                  <li>
+                    <%= link_to logout_path, method: :delete, class: "dropdown-item" do %>
+                      <i class="bi bi-box-arrow-right"></i> Logout
+                    <% end %>
+                  </li>
+                <% else %>
+                  <li>
+                    <a class="dropdown-item" href="/login">
+                      <i class="bi bi-box-arrow-in-right"></i> Login
+                    </a>
+                  </li>
+                <% end %>
+              </ul>
             </li>
           </ul>
 

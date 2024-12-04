@@ -1,0 +1,5 @@
+<% if logged_in? %>
+  <p>Welcome, <%= current_user.name %>! <%= link_to "Logout", logout_path, method: :delete %></p>
+<% else %>
+  <p><%= link_to "Login", login_path %> or <%= link_to "Register", register_path %></p>
+<% end %>
