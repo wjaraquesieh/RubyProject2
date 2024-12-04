@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "cart-icon" do %>
+  <%= link_to "Cart (#{session[:cart]&.size || 0})", cart_path, class: "bi bi-cart" %>
+<% end %>

@@ -1,0 +1,43 @@
+<h1>Your Cart</h1>
+
+<% if @cart_items.any? %>
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cart_items.each do |item| %>
+        <tr>
+          <td><%= link_to image_tag(item.image, alt: item.name, class: "cart-image"), product_path(item) %></td>
+          <td><%= item.name %></td>
+          <td>$<%= item.price %> <%= item.currency %></td>
+          <td>
+            <%= button_to "Remove", cart_remove_path(product_id: item.id), method: :delete, class: "remove-button" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" class="text-right"><strong>Subtotal:</strong></td>
+        <td><%= number_to_currency(@subtotal) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right"><strong>Taxes:</strong></td>
+        <td><%= number_to_currency(@tax) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+        <td><%= number_to_currency(@total) %></td>
+      </tr>
+    </tfoot>
+  </table>
+  <%#= link_to "Proceed to Checkout", checkout_path, class: "checkout-button" %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
