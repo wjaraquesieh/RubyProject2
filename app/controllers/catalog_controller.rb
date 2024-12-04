@@ -1,6 +1,11 @@
 class CatalogController < ApplicationController
   def index
-    @products = Product.all
+    @products = Product.where(product_type_id: 1)
+                  .page(params[:page]).per(15)
+  end
+
+  def accessory
+    @products = Product.where(product_type_id: 2)
                   .page(params[:page]).per(15)
   end
 
@@ -10,10 +15,9 @@ class CatalogController < ApplicationController
 
   def search
     @query = params[:query]
-
-    @products = Product.where("name LIKE ?", "%#{@query}%")
+    puts params[:query]
+    @products = Product.where("name LIKE ? ", "%#{@query}%")
+    puts @product
     @products = @products.page(params[:page]).per(15)
-
-    render :index
   end
 end

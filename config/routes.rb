@@ -44,6 +44,8 @@ Rails.application.routes.draw do
 
   get "catalogs", to: "catalog#index"
   get "catalog/:id", to: "catalog#show", as: "catalog"
+  get "accessories", to: "catalog#accessory"
+  get "search", to: "catalog#search"
 
   get "cart", to: "carts#index"
   post "cart/add", to: "carts#add", as: "cart_add"
