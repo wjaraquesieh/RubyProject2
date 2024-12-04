@@ -15,9 +15,10 @@ class CatalogController < ApplicationController
 
   def search
     @query = params[:query]
-    puts params[:query]
-    @products = Product.where("name LIKE ? ", "%#{@query}%")
-    puts @product
+    @type = params[:type]
+
+    @products = Product.where("name LIKE ?", "%#{@query}%")
+    @products = @products.where(product_type: @type) unless @type == "all"
     @products = @products.page(params[:page]).per(15)
   end
 end

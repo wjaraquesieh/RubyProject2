@@ -12,6 +12,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -42,55 +43,75 @@
           </ul>
           <form class="d-flex" action="/search" method="get">
             <input class="form-control me-2" type="search" name="query" placeholder="Search a product" aria-label="Search">
+            <select class="form-select me-2" id="productTypeSelect" name="type">
+              <option value="all">All</option>
+              <!-- List of product types -->
+            </select>
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
 
           <!-- Align login to the right -->
           <ul class="navbar-nav ms-auto">
             <% if current_user&.profile_id == 1 %>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#maintainersMenu" role="button" aria-expanded="false" aria-controls="maintainersMenu">
-                  Maintainers
-                </a>
-                <div class="collapse" id="maintainersMenu">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      <a href="/categories" class="dropdown-item">Categories</a>
-                    </li>
-                    <li class="list-group-item">
-                      <a href="/deliveries" class="dropdown-item">Deliveries</a>
-                    </li>
-                    <li class="list-group-item">
-                      <a href="/product_type" class="dropdown-item">Product Type</a>
-                    </li>
-                    <li class="list-group-item">
-                      <a href="/payment_types" class="dropdown-item">Payment Types</a>
-                    </li>
-                    <li class="list-group-item">
-                      <a href="/profiles" class="dropdown-item">Profiles</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/products">Products</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/users">Users</a>
-              </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                id="navbarDropdownAdminPanel"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Admin Panel
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdminPanel">
+                <li>
+                  <a class="dropdown-item" href="/products">Products</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/users">Users</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                id="navbarDropdownMaintainers"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Maintainers
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMaintainers">
+                <li>
+                  <a href="/categories" class="dropdown-item">Categories</a>
+                </li>
+                <li>
+                  <a href="/deliveries" class="dropdown-item">Deliveries</a>
+                </li>
+                <li>
+                  <a href="/product_type" class="dropdown-item">Product Type</a>
+                </li>
+                <li>
+                  <a href="/payment_types" class="dropdown-item">Payment Types</a>
+                </li>
+                <li>
+                  <a href="/profiles" class="dropdown-item">Profiles</a>
+                </li>
+              </ul>
+            </li>
             <% end %>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
+                id="navbarDropdownUser"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 <i class="bi bi-person"></i>
               </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                 <% if logged_in? %>
                   <li>
                     <a class="dropdown-item" href="/profile">
@@ -132,6 +153,27 @@
       <%= yield %>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Selecciona todos los elementos de menú desplegable
+    var dropdowns = document.querySelectorAll('.dropdown-toggle');
+
+    dropdowns.forEach(function(dropdown) {
+      dropdown.addEventListener('click', function() {
+        // Cierra todos los menús desplegables antes de abrir el nuevo
+        dropdowns.forEach(function(otherDropdown) {
+          if (otherDropdown !== dropdown) {
+            var dropdownMenu = otherDropdown.nextElementSibling;
+            if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+              var bsDropdown = new bootstrap.Dropdown(otherDropdown);
+              bsDropdown.hide();
+            }
+          }
+        });
+      });
+    });
+  });
+</script>

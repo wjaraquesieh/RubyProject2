@@ -62,4 +62,6 @@ Rails.application.routes.draw do
   resources :product_type, only: [ :index, :create, :update, :destroy ]
   resources :payment_types, only: [ :index, :create, :update, :destroy ]
   resources :profiles, only: [ :index, :create, :update, :destroy ]
+
+  get "list_product_type", to: "product_type#search"
 end
