@@ -1,4 +1,6 @@
 class ProfilesController < ApplicationController
+  before_action :require_login
+
   def index
     @profiles = Profile.all
                   .page(params[:page]).per(15)

@@ -1,5 +1,10 @@
 <div class="container">
-  <h1 class="mt-5">Users</h1>
+  <div class="d-flex justify-content-between align-items-center mt-5">
+    <h1>Users</h1>
+    <button class="btn btn-success" onclick="window.location.href='/register'">
+      Add User
+    </button>
+  </div>
   <table class="table table-striped table-hover mt-3">
     <thead>
       <tr>
@@ -28,8 +33,10 @@
               data-user-id="<%= user.id %>"
               data-user-email="<%= user.email %>"
               data-user-phone="<%= user.phone %>"
+              data-user-password="<%= user.password %>"
               data-user-name="<%= user.name %>"
               data-user-userName="<%= user.user_name %>"
+              data-user-profileId="<%= user.profile_id %>"
             >
               Edit
             </button>
@@ -62,16 +69,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <%= form_with url: users_path(:id), method: :patch, id: "editUserForm", local: true do |f| %>
+        <%= form_with(model: @user, url: user_path(:id), method: :patch, id: "editUserForm", local: true) do |f| %>
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-          <div class="mb-3">
-            <%= f.label :email, "User Email", class: "form-label" %>
-            <%= f.text_field :email, class: "form-control", id: "userEmailInput" %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :phone, "User Phone", class: "form-label" %>
-            <%= f.text_field :phone, class: "form-control", id: "userPhoneInput" %>
-          </div>
           <div class="mb-3">
             <%= f.label :name, "Name", class: "form-label" %>
             <%= f.text_field :name, class: "form-control", id: "userInput" %>
@@ -81,10 +80,43 @@
             <%= f.text_field :user_name, class: "form-control", id: "userNameInput" %>
           </div>
           <div class="mb-3">
+            <%= f.label :email, "User Email", class: "form-label" %>
+            <%= f.text_field :email, class: "form-control", id: "userEmailInput" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :phone, "User Phone", class: "form-label" %>
+            <%= f.text_field :phone, class: "form-control", id: "userPhoneInput" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :password, "User Password", class: "form-label" %>
+            <%= f.password_field :password, class: "form-control", id: "userPasswordInput" %>
+          </div>
+          <div class="mb-3">
             <%= f.label :profile_id, 'Profile' %>
             <%= f.select :profile_id, Profile.all.collect { |p| [p.name, p.id] }, { prompt: 'Select Profile' }, class: 'form-control' %>
           </div>
           <%= f.submit "Save Changes", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the user <strong id="deleteUserName"></strong>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <%= form_with url: user_path(:id), method: :delete, id: "deleteUserForm", local: true do %>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <%= submit_tag "Delete", class: "btn btn-danger" %>
         <% end %>
       </div>
     </div>
@@ -101,19 +133,35 @@
       const userId = button.getAttribute("data-user-id");
       const userEmail = button.getAttribute("data-user-email");
       const userPhone = button.getAttribute("data-user-phone");
+      const userPassword = button.getAttribute("data-user-password");
       const userName = button.getAttribute("data-user-name");
       const userUserName = button.getAttribute("data-user-userName");
+      const userProfileId = button.getAttribute("data-user-profileId");
 
-
-      console.log(userId + " " + userEmail + " " + userPhone + " " + userName + " " + userUserName)
       // Populate form action and input
       const form = document.getElementById("editUserForm");
       form.action = `/users/${userId}`;
       document.getElementById("userEmailInput").value = userEmail;
       document.getElementById("userPhoneInput").value = userPhone;
+      document.getElementById("userPasswordInput").value = userPassword;
       document.getElementById("userInput").value = userName;
       document.getElementById("userNameInput").value = userUserName;
+      document.getElementById("profile_id").value = userProfileId;
     });
+
+    // Delete Modal
+    const deleteModal = document.getElementById("deleteModal");
+    deleteModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const userId = button.getAttribute("data-user-id");
+      const userName = button.getAttribute("data-user-name");
+
+      // Populate delete button action and user name
+      const deleteForm = document.getElementById("deleteUserForm");
+      deleteForm.action = `/users/${userId}`;
+      document.getElementById("deleteUserName").textContent = userName;
+    });
+
 
   });
 

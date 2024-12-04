@@ -1,4 +1,5 @@
 class LoginController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [ :login ]
   def index
   end
 
@@ -6,7 +7,22 @@ class LoginController < ApplicationController
   end
 
   def login
-    @user = Users.all
+    user = User.find_by(user_name: params[:username])
+    puts user
+    if user && user.password == params[:password]
+      # Inicia sesión guardando el ID del usuario en la sesión
+      session[:user_id] = user.id
+      redirect_to root_path, notice: "Welcome back, #{user.name}!"
+    else
+      # Muestra un mensaje de error si las credenciales no son válidas
+      flash.now[:alert] = "Invalid username or password. Please try again."
+      render :index
+    end
+  end
+
+  def logout
+    session[:user_id] = nil
+    redirect_to login_path, notice: "You have successfully logged out."
   end
 
   def newRegister

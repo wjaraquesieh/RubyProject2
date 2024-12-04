@@ -1,4 +1,6 @@
 class ProductTypeController < ApplicationController
+  before_action :require_login
+
   def index
     @productTypes = ProductType.all
                   .page(params[:page]).per(15)

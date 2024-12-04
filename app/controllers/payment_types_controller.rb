@@ -1,4 +1,6 @@
 class PaymentTypesController < ApplicationController
+  before_action :require_login
+
   def index
     @paymentTypes = PaymentType.all
                     .page(params[:page]).per(15)

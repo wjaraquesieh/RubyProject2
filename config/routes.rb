@@ -36,12 +36,13 @@ Rails.application.routes.draw do
   post "login", to: "login#login"
   get "register", to: "login#register"
   post "register", to: "login#newRegister"
+  get "logout", to: "login#logout"
 
   resources :products, only: [ :index, :new, :create, :show, :edit, :destroy ]
 
   # Maintainer
   resources :categories, only: [ :index, :create, :update, :destroy ]
-  resources :users, only: [ :index, :update ]
+  resources :users, only: [ :index, :update, :destroy ]
   resources :deliveries, only: [ :index, :create, :update, :destroy ]
   resources :product_type, only: [ :index, :create, :update, :destroy ]
   resources :payment_types, only: [ :index, :create, :update, :destroy ]

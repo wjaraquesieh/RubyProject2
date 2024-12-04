@@ -1,4 +1,6 @@
 class DeliveriesController < ApplicationController
+  before_action :require_login
+
   def index
     @deliveries = Delivery.all
                   .page(params[:page]).per(15)
