@@ -47,7 +47,7 @@ Rails.application.routes.draw do
 
   get "cart", to: "carts#index"
   post "cart/add", to: "carts#add", as: "cart_add"
-  delete "cart/remove", to: "carts#remove", as: "cart_remove"
+  delete "cart/destroy", to: "carts#destroy", as: "cart_remove"
 
   get "/contact", to: "contact#index"
   post "/contact", to: "contact#send_message"

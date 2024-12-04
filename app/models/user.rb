@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   belongs_to :profile
   has_many :orders
+  has_many :carts
 
   validates :name, presence: true
   validates :user_name, presence: true
