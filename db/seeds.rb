@@ -17,6 +17,7 @@ PaymentType.destroy_all
 ProductType.destroy_all
 Profile.destroy_all
 Status.destroy_all
+Province.destroy_all
 
 # Loop to get the information
 CSV.foreach('db/csv/category.csv', headers: true) do |row|
@@ -36,4 +37,7 @@ CSV.foreach('db/csv/profile.csv', headers: true) do |row|
 end
 CSV.foreach('db/csv/status.csv', headers: true) do |row|
   Status.create(name: row['name'])
+end
+CSV.foreach('db/csv/province.csv', headers: true) do |row|
+  Province.create(name: row['name'], pst: row['pst'], gst: row['gst'], hst: row['hst'])
 end

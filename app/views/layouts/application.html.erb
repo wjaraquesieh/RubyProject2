@@ -7,7 +7,6 @@
     <%= javascript_importmap_tags %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
@@ -43,7 +42,7 @@
           </ul>
           <form class="d-flex" action="/search" method="get">
             <input class="form-control me-2" type="search" name="query" placeholder="Search a product" aria-label="Search">
-            <select class="form-select me-2" id="productTypeSelect" name="type">
+            <select class="form-select me-2" id="categorySelect" name="type">
               <option value="all">All</option>
               <!-- List of product types -->
             </select>
@@ -69,6 +68,9 @@
                 </li>
                 <li>
                   <a class="dropdown-item" href="/users">Users</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/order_admin">Orders</a>
                 </li>
               </ul>
             </li>
@@ -129,6 +131,11 @@
                       <i class="bi bi-box-arrow-in-right"></i> Login
                     </a>
                   </li>
+                  <li>
+                    <a class="dropdown-item" href="/register">
+                      <i class="bi bi-pencil-square"></i> Register
+                    </a>
+                  </li>
                 <% end %>
 
               </ul>
@@ -140,7 +147,11 @@
               </a>
               <%= link_to 'Cart', cart_path, class: 'cart-link' %>
               <span class="cart-count">
-                <%= Cart.where(user_id: current_user.id).count %>
+                <% if logged_in? %>
+                  <%= Cart.where(user_id: current_user.id).count %>
+                <% else %>
+                  <%= session[:cart]&.size || 0 %>
+                <% end %>
               </span>
             </li>
           </ul>
@@ -157,23 +168,22 @@
 </html>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Selecciona todos los elementos de menú desplegable
-    var dropdowns = document.querySelectorAll('.dropdown-toggle');
+  document.addEventListener('turbo:load', function() {
+  var dropdowns = document.querySelectorAll('.dropdown-toggle');
 
-    dropdowns.forEach(function(dropdown) {
-      dropdown.addEventListener('click', function() {
-        // Cierra todos los menús desplegables antes de abrir el nuevo
-        dropdowns.forEach(function(otherDropdown) {
-          if (otherDropdown !== dropdown) {
-            var dropdownMenu = otherDropdown.nextElementSibling;
-            if (dropdownMenu && dropdownMenu.classList.contains('show')) {
-              var bsDropdown = new bootstrap.Dropdown(otherDropdown);
-              bsDropdown.hide();
-            }
+  dropdowns.forEach(function(dropdown) {
+    var bsDropdown = new bootstrap.Dropdown(dropdown);
+
+    dropdown.addEventListener('click', function() {
+      dropdowns.forEach(function(otherDropdown) {
+        if (otherDropdown !== dropdown) {
+          var dropdownMenu = otherDropdown.nextElementSibling;
+          if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+            bsDropdown.hide();
           }
-        });
+        }
       });
     });
   });
+});
 </script>

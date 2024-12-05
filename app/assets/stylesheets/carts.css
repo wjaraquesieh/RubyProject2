@@ -66,3 +66,123 @@
   margin-left: 5px;
   display: inline-block;
 }
+
+.checkout-container {
+  display: flex;
+  gap: 20px;
+}
+
+.checkout-left {
+  flex: 3;
+}
+
+.checkout-right {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.delivery-option {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.delivery-option input[type="radio"] {
+  margin-right: 5px;
+}
+
+.payment-option {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px; /* Espaciado opcional entre opciones */
+}
+
+.payment-option input[type="radio"] {
+  margin-right: 5px; /* Espaciado entre el botón y el label */
+}
+
+.shipping-form {
+  display: grid;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+input, select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+select {
+  appearance: none;
+  background: white url('data:image/svg+xml;charset=US-ASCII,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%204%205"><path%20fill="black"%20d="M2%200L4%202H0z"/></svg>') no-repeat right 10px center;
+  background-size: 10px 10px;
+}
+
+input::placeholder,
+select::placeholder {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.checkout-right {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.cart-summary {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.cart-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 5px;
+}
+
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.cart-item-price {
+  font-size: 14px;
+  color: #888;
+  margin: 5px 0 0;
+}

@@ -1,2 +1,29 @@
-<h1>Orders#show</h1>
-<p>Find me in app/views/orders/show.html.erb</p>
+<h1>Details Order #<%= @order.id %></h1>
+
+<p><strong>User:</strong> <%= @order.user&.email || 'Invitado' %></p>
+<p><strong>Address:</strong> <%= @order.shipping_address&.address || 'Sin Dirección' %></p>
+<p><strong>City:</strong> <%= @order.shipping_address&.city || 'Sin Dirección' %></p>
+<p><strong>Total:</strong> <%= number_to_currency(@order.total) %></p>
+<p><strong>Status:</strong> <%= @order.active_status&.name || 'Sin Estado' %></p>
+
+<h2>Products:</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_products.each do |order_product| %>
+      <tr>
+        <td><%= order_product.product.name %></td>
+        <td><%= order_product.quantity %></td>
+        <td><%= number_to_currency(order_product.product.price) %></td>
+        <td><%= number_to_currency(order_product.product.price * order_product.quantity) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

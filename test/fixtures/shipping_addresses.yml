@@ -6,7 +6,7 @@ one:
   address: MyString
   apartment: MyString
   city: MyString
-  province: MyString
+  province_id: 1
   postal_code: MyString
   country: MyString
   phone: MyString
@@ -17,7 +17,7 @@ two:
   address: MyString
   apartment: MyString
   city: MyString
-  province: MyString
+  province_id: 1
   postal_code: MyString
   country: MyString
   phone: MyString

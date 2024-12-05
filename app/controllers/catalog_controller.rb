@@ -18,7 +18,7 @@ class CatalogController < ApplicationController
     @type = params[:type]
 
     @products = Product.where("name LIKE ?", "%#{@query}%")
-    @products = @products.where(product_type: @type) unless @type == "all"
+    @products = @products.where(category: @type) unless @type == "all"
     @products = @products.page(params[:page]).per(15)
   end
 end

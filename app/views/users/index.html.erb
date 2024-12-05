@@ -70,7 +70,7 @@
       </div>
       <div class="modal-body">
         <%= form_with(model: @user, url: user_path(:id), method: :patch, id: "editUserForm", local: true) do |f| %>
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
           <div class="mb-3">
             <%= f.label :name, "Name", class: "form-label" %>
             <%= f.text_field :name, class: "form-control", id: "userInput" %>
@@ -115,7 +115,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <%= form_with url: user_path(:id), method: :delete, id: "deleteUserForm", local: true do %>
-          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
           <%= submit_tag "Delete", class: "btn btn-danger" %>
         <% end %>
       </div>

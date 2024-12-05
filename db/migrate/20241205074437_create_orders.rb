@@ -4,7 +4,7 @@ class CreateOrders < ActiveRecord::Migration[7.2]
       t.decimal :total
       t.decimal :taxes
       t.string :email
-      t.references :user, null: false, foreign_key: true
+      t.references :user, null: true, foreign_key: true
       t.references :delivery, null: false, foreign_key: true
       t.references :shipping_address, null: false, foreign_key: true
 

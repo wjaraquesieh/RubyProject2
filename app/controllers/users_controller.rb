@@ -6,6 +6,11 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = current_user
+  end
+
+  def edit
+    @user = current_user
   end
 
   def update
@@ -24,6 +29,10 @@ class UsersController < ApplicationController
     else
       redirect_to users_path, alert: "Error deleting User."
     end
+  end
+
+  def orders
+    @orders = current_user.orders.includes(:shipping_address, :delivery, active_status: :order_statuses)
   end
 
   private
