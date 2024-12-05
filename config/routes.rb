@@ -50,6 +50,10 @@ Rails.application.routes.draw do
   get "cart", to: "carts#index"
   post "cart/add", to: "carts#add", as: "cart_add"
   delete "cart/destroy", to: "carts#destroy", as: "cart_remove"
+  get "checkout", to: "carts#checkout"
+  post "/guest_checkout", to: "checkouts#guest_checkout"
+
+  post "/create_order", to: "orders#create"
 
   get "contact", to: "contact#index"
   post "contact", to: "contact#send_message"

@@ -1,0 +1,103 @@
+<div class="checkout-container">
+  <div class="checkout-left">
+
+    <%# Formulario para Delivery %>
+    <%= form_with url: create_order_path, method: :post, class: "checkout-form" do |f| %>
+
+    <% if !logged_in? %>
+      <p>Would you like to log in?</p>
+      <%= link_to "Log In", login_path, class: "button-login" %>
+      <p>Or continue as guest by providing your email:</p>
+      <h2>Contact</h2>
+      <%= f.email_field :email, placeholder: "Enter your email", required: true %>
+    <% end %>
+      <hr/>
+      <h2>Delivery</h2>
+
+      <% Delivery.all.each do |delivery| %>
+        <div class="delivery-option">
+          <%= f.radio_button :delivery, delivery.id %>
+          <%= label_tag "delivery#{delivery.id}", delivery.description %>
+        </div>
+      <% end %>
+
+      <hr/>
+      <h2>Shipping Information</h2>
+      <div class="shipping-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" placeholder="First name" />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" placeholder="Last name" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" placeholder="Address" />
+        </div>
+        <div class="form-group">
+          <label for="apartment">Apartment, suite, etc. (optional)</label>
+          <input type="text" id="apartment" placeholder="Apartment, suite, etc. (optional)" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" placeholder="City" />
+          </div>
+          <div class="form-group">
+            <label for="province">Province</label>
+            <input type="text" id="province" placeholder="province" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="postal-code">Postal Code</label>
+            <input type="text" id="postal-code" placeholder="Postal code" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone (optional)</label>
+            <input type="tel" id="phone" placeholder="Phone" />
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+      <h2>Payment Method</h2>
+      <% PaymentType.all.each do |payment| %>
+        <div class="payment-option">
+          <%= f.radio_button :payment_type, payment.id %>
+          <%= label_tag "payment_type_#{payment.id}", payment.name %>
+        </div>
+      <% end %>
+
+      <%# Campos extra para tarjetas de crédito %>
+      <div id="credit-card-fields" style="display: none;">
+        <%= f.text_field :card_name, placeholder: "Name on Card" %>
+        <%= f.text_field :card_number, placeholder: "Card Number", maxlength: 16 %>
+        <%= f.text_field :card_expiry, placeholder: "MM/YY", maxlength: 5 %>
+        <%= f.text_field :card_cvc, placeholder: "CVC", maxlength: 3 %>
+      </div>
+
+      <hr/>
+      <%= f.submit "Complete Purchase", class: "button-complete" %>
+    <% end %>
+  </div>
+
+  <div class="checkout-right">
+    <h2>Order Summary</h2>
+    <ul>
+      <%# @cart_items.each do |item| %>
+        <li>
+          <%#= image_tag(item.product.image, alt: item.product.name, class: "cart-summary-image") %>
+          <p><%#= item.product.name %> - <%#= number_to_currency(item.product.price) %></p>
+        </li>
+      <%# end %>
+    </ul>
+    <p><strong>Subtotal:</strong> <%#= number_to_currency(@subtotal) %></p>
+    <p><strong>Taxes:</strong> <%#= number_to_currency(@tax) %></p>
+    <p><strong>Total:</strong> <%#= number_to_currency(@total) %></p>
+  </div>
+</div>

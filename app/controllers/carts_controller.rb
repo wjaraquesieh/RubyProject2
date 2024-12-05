@@ -61,4 +61,11 @@ class CartsController < ApplicationController
       end
     end
   end
+
+  def checkout
+    # @cart_items = current_cart.items
+    # @subtotal = current_cart.subtotal
+    # @tax = current_cart.tax
+    # @total = current_cart.total
+  end
 end
