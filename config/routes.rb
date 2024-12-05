@@ -51,8 +51,10 @@ Rails.application.routes.draw do
   post "cart/add", to: "carts#add", as: "cart_add"
   delete "cart/destroy", to: "carts#destroy", as: "cart_remove"
 
-  get "/contact", to: "contact#index"
-  post "/contact", to: "contact#send_message"
+  get "contact", to: "contact#index"
+  post "contact", to: "contact#send_message"
+
+  get "list_category", to: "categories#search"
 
   # Maintainer
   resources :products, only: [ :index, :new, :create, :show, :edit, :destroy ]
@@ -62,6 +64,4 @@ Rails.application.routes.draw do
   resources :product_type, only: [ :index, :create, :update, :destroy ]
   resources :payment_types, only: [ :index, :create, :update, :destroy ]
   resources :profiles, only: [ :index, :create, :update, :destroy ]
-
-  get "list_product_type", to: "product_type#search"
 end

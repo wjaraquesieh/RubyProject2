@@ -1,5 +1,10 @@
 class CategoriesController < ApplicationController
-  before_action :require_login
+  before_action :require_login, except: [ :search ]
+
+  def search
+    @categories = Category.all
+    render json: @categories, status: :ok
+  end
 
   def index
     @categories = Category.all

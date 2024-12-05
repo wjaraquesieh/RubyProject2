@@ -4,7 +4,7 @@
       <%= link_to image_tag(product.image, alt: product.name), catalog_path(product.id), class: "catalog-image" %>
       <%= link_to product.name, catalog_path(product), class: "catalog-name" %>
       <p>$<%= product.price %> <%= product.currency %></p>
-      <%= button_to "Add to Cart", carts_add_path(product_id: product.id), method: :post, class: "add-to-cart-button" %>
+      <%= button_to "Add to Cart", cart_add_path(product_id: product.id), method: :post, class: "add-to-cart-button" %>
     </div>
   <% end %>
 </div>

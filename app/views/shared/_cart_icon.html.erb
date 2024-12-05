@@ -3,5 +3,9 @@
   </a>
   <%= link_to 'Cart', cart_path, class: 'cart-link' %>
   <span class="cart-count">
-    <%= Cart.where(user_id: current_user.id).count %>
+    <% if logged_in? %>
+      <%= Cart.where(user_id: current_user.id).count %>
+    <% else %>
+      <%= session[:cart]&.size || 0 %>
+    <% end %>
   </span>
