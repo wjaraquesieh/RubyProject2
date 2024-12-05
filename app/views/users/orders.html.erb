@@ -1,0 +1,30 @@
+<h1>My Orders</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Total</th>
+      <th>Date</th>
+      <th>Shipping Address</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+    <% puts order%>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= number_to_currency(order.total) %></td>
+        <td><%= order.created_at.strftime('%d/%m/%Y') %></td>
+        <td><%= order.shipping_address.address %>, <%= order.shipping_address.city %></td>
+        <td><% if order.active_status %>
+            <span class="badge bg-success"><%= order.active_status.name %></span>
+          <% else %>
+            <span class="badge bg-secondary">Without active Status</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

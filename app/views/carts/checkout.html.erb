@@ -2,7 +2,7 @@
   <div class="checkout-left">
 
     <%# Formulario para Delivery %>
-    <%= form_with url: create_order_path, method: :post, class: "checkout-form" do |f| %>
+    <%= form_with url: orders_path, method: :post, class: "checkout-form" do |f| %>
 
     <% if !logged_in? %>
       <p>Would you like to log in?</p>
@@ -26,40 +26,48 @@
       <div class="shipping-form">
         <div class="form-row">
           <div class="form-group">
-            <label for="first-name">First Name</label>
-            <input type="text" id="first-name" placeholder="First name" />
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" placeholder="First name" />
           </div>
           <div class="form-group">
-            <label for="last-name">Last Name</label>
-            <input type="text" id="last-name" placeholder="Last name" />
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Last name" />
           </div>
         </div>
         <div class="form-group">
           <label for="address">Address</label>
-          <input type="text" id="address" placeholder="Address" />
+          <input type="text" id="address" name="address" placeholder="Address" />
         </div>
-        <div class="form-group">
-          <label for="apartment">Apartment, suite, etc. (optional)</label>
-          <input type="text" id="apartment" placeholder="Apartment, suite, etc. (optional)" />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="apartment">Apartment, suite, etc. (optional)</label>
+            <input type="text" id="apartment" name="apartment" placeholder="Apartment, suite, etc. (optional)" />
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="city">City</label>
-            <input type="text" id="city" placeholder="City" />
+            <input type="text" id="city" name="city" placeholder="City" />
           </div>
           <div class="form-group">
-            <label for="province">Province</label>
-            <input type="text" id="province" placeholder="province" />
+            <label for="postal_code">Postal Code</label>
+            <input type="text" id="postal_code" name="postal_code" placeholder="XXX XXX" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="postal-code">Postal Code</label>
-            <input type="text" id="postal-code" placeholder="Postal code" />
+            <%= f.label :province, 'Province' %>
+              <%= f.select :province, Province.all.collect { |p| [p.name, p.id] }, { prompt: 'Select Province' }, class: 'form-control' %>
           </div>
           <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" placeholder="country" value="Canada" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
             <label for="phone">Phone (optional)</label>
-            <input type="tel" id="phone" placeholder="Phone" />
+            <input type="tel" id="phone" name="phone" placeholder="Phone" />
           </div>
         </div>
       </div>
@@ -68,19 +76,35 @@
       <h2>Payment Method</h2>
       <% PaymentType.all.each do |payment| %>
         <div class="payment-option">
-          <%= f.radio_button :payment_type, payment.id %>
+          <%= f.radio_button :payment_type, payment.id,
+                       checked: (payment.id == 1),
+                       data: { show_credit_card: (payment.id == 1) } %>
           <%= label_tag "payment_type_#{payment.id}", payment.name %>
         </div>
       <% end %>
 
       <%# Campos extra para tarjetas de crédito %>
-      <div id="credit-card-fields" style="display: none;">
-        <%= f.text_field :card_name, placeholder: "Name on Card" %>
-        <%= f.text_field :card_number, placeholder: "Card Number", maxlength: 16 %>
-        <%= f.text_field :card_expiry, placeholder: "MM/YY", maxlength: 5 %>
-        <%= f.text_field :card_cvc, placeholder: "CVC", maxlength: 3 %>
+      <div id="credit-card-fields" style="display: block;">
+         <div class="form-group">
+            <%= f.label :card_name, 'Name on Card' %>
+            <%= f.text_field :card_name, class: 'form-control', required: true %>
+          </div>
+         <div class="form-group">
+            <%= f.label :card_number, 'Card Number' %>
+            <%= f.text_field :card_number, class: 'form-control', required: true, maxlength: 16 %>
+          </div>
+         <div class="form-group">
+            <%= f.label :card_expiry, 'MM/YY' %>
+            <%= f.text_field :card_expiry, class: 'form-control', required: true, maxlength: 5 %>
+          </div>
+         <div class="form-group">
+            <%= f.label :card_cvc, 'CVC' %>
+            <%= f.text_field :card_cvc, class: 'form-control', required: true, maxlength: 3 %>
+          </div>
       </div>
 
+      <%= f.hidden_field :taxes, value: @tax %>
+      <%= f.hidden_field :total, value: @total %>
       <hr/>
       <%= f.submit "Complete Purchase", class: "button-complete" %>
     <% end %>
@@ -89,15 +113,84 @@
   <div class="checkout-right">
     <h2>Order Summary</h2>
     <ul>
-      <%# @cart_items.each do |item| %>
-        <li>
-          <%#= image_tag(item.product.image, alt: item.product.name, class: "cart-summary-image") %>
-          <p><%#= item.product.name %> - <%#= number_to_currency(item.product.price) %></p>
+      <% @cart_items.each do |item| %>
+        <li class="cart-item">
+          <% if logged_in? %>
+            <%= image_tag(item.product.image, alt: item.product.name, class: "cart-item-image") %>
+            <div class="cart-item-details">
+              <p class="cart-item-name"><%= item.product.name %></p>
+              <p class="cart-item-price"><%= number_to_currency(item.product.price) %></p>
+            </div>
+          <% else %>
+            <%= image_tag(item.image, alt: item.name, class: "cart-item-image") %>
+            <div class="cart-item-details">
+              <p class="cart-item-name"><%= item.name %></p>
+              <p class="cart-item-price"><%= number_to_currency(item.price) %></p>
+            </div>
+          <% end %>
         </li>
-      <%# end %>
+      <% end %>
     </ul>
-    <p><strong>Subtotal:</strong> <%#= number_to_currency(@subtotal) %></p>
-    <p><strong>Taxes:</strong> <%#= number_to_currency(@tax) %></p>
-    <p><strong>Total:</strong> <%#= number_to_currency(@total) %></p>
+    <p><strong>Subtotal:</strong> <span id="subtotal"><%= number_to_currency(@subtotal) %></span></p>
+    <p><strong>Taxes:</strong> <span id="taxes"><%= number_to_currency(@tax) %></span></p>
+    <p><strong>Total:</strong> <span id="total"><%= number_to_currency(@total) %></span></p>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const paymentOptions = document.querySelectorAll('input[name="payment_type"]');
+    const creditCardFields = document.getElementById('credit-card-fields');
+
+    const toggleCreditCardFields = () => {
+      const selectedOption = document.querySelector('input[name="payment_type"]:checked');
+      if (selectedOption && selectedOption.dataset.showCreditCard === "true") {
+        creditCardFields.style.display = 'block';
+      } else {
+        creditCardFields.style.display = 'none';
+      }
+    };
+
+    paymentOptions.forEach(option => {
+      option.addEventListener('change', toggleCreditCardFields);
+    });
+
+    toggleCreditCardFields();
+
+    const provinceSelect = document.querySelector('[name="province"]');
+    const subtotalElement = document.getElementById('subtotal');  // Cambia esto si es necesario
+    const taxesElement = document.getElementById('taxes');
+    const totalElement = document.getElementById('total');
+
+    const subtotal = parseFloat(subtotalElement.textContent.replace(/[^0-9.-]+/g, ""));
+
+    const calculateTaxes = (provinceId) => {
+      // Suponiendo que tienes un objeto con los impuestos por provincia
+      fetch(`/list_provinces/${provinceId}`)
+        .then(response => response.json())
+        .then(province => {
+          let taxes = 0;
+          if (province.pst) taxes += province.pst; // Si existe PST
+          if (province.gst) taxes += province.gst; // Si existe GST
+          if (province.hst) taxes += province.hst; // Si existe HST
+
+          const totalTaxes = subtotal * taxes;
+          const total = subtotal + totalTaxes;
+
+          // Actualizar los valores en la vista
+          taxesElement.textContent = totalTaxes.toFixed(2); // Mostrar el total de impuestos
+          totalElement.textContent = total.toFixed(2); // Mostrar el total con impuestos
+        })
+        .catch(error => console.error('Error fetching province data:', error));
+    };
+
+    // Evento para detectar cambios en la provincia
+    provinceSelect.addEventListener('change', () => {
+      const provinceId = provinceSelect.value;
+      if (provinceId) {
+        calculateTaxes(provinceId);
+      }
+    });
+  });
+
+</script>

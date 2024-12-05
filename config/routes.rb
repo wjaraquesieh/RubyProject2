@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "shipping_address/new"
+  get "shipping_address/create"
+  get "shipping_address/edit"
+  get "shipping_address/update"
   get "carts/add"
   get "catalog/index"
   get "catalog/show"
@@ -53,17 +57,29 @@ Rails.application.routes.draw do
   get "checkout", to: "carts#checkout"
   post "/guest_checkout", to: "checkouts#guest_checkout"
 
-  post "/create_order", to: "orders#create"
-
   get "contact", to: "contact#index"
   post "contact", to: "contact#send_message"
 
   get "list_category", to: "categories#search"
 
+  resources :orders, only: [ :index, :show, :new, :create ]
+
+  get "profile", to: "users#show"
+  get "order_admin", to: "orders#admin_index"
+  patch "update_status/:id", to: "orders#update_status", as: "update_status"
+
+  resources :province, only: [ :list ]
+
   # Maintainer
   resources :products, only: [ :index, :new, :create, :show, :edit, :destroy ]
   resources :categories, only: [ :index, :create, :update, :destroy ]
-  resources :users, only: [ :index, :update, :destroy ]
+  resources :users, only: [ :index, :edit, :update, :destroy ] do
+    member do
+      get :orders
+      get :shipping_addresses
+    end
+    resources :shipping_addresses, only: [ :new, :create, :edit, :update ]
+  end
   resources :deliveries, only: [ :index, :create, :update, :destroy ]
   resources :product_type, only: [ :index, :create, :update, :destroy ]
   resources :payment_types, only: [ :index, :create, :update, :destroy ]

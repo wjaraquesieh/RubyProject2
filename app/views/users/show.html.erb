@@ -1,2 +1,12 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<h1>My Profile</h1>
+
+<div>
+  <p><strong>Name:</strong> <%= @user.name %></p>
+  <p><strong>user:</strong> <%= @user.user_name %></p>
+  <p><strong>Email:</strong> <%= @user.email %></p>
+  <p><strong>Phone:</strong> <%= @user.phone %></p>
+</div>
+
+<%= link_to 'Change password', edit_user_path(@user), class: 'btn btn-primary' %>
+<%= link_to 'Addresses', shipping_addresses_user_path(@user), class: 'btn btn-secondary' %>
+<%= link_to 'My Orders', orders_user_path(@user), class: 'btn btn-secondary' %>

@@ -7,7 +7,6 @@
     <%= javascript_importmap_tags %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
@@ -69,6 +68,9 @@
                 </li>
                 <li>
                   <a class="dropdown-item" href="/users">Users</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/order_admin">Orders</a>
                 </li>
               </ul>
             </li>
@@ -166,23 +168,22 @@
 </html>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Selecciona todos los elementos de menú desplegable
-    var dropdowns = document.querySelectorAll('.dropdown-toggle');
+  document.addEventListener('turbo:load', function() {
+  var dropdowns = document.querySelectorAll('.dropdown-toggle');
 
-    dropdowns.forEach(function(dropdown) {
-      dropdown.addEventListener('click', function() {
-        // Cierra todos los menús desplegables antes de abrir el nuevo
-        dropdowns.forEach(function(otherDropdown) {
-          if (otherDropdown !== dropdown) {
-            var dropdownMenu = otherDropdown.nextElementSibling;
-            if (dropdownMenu && dropdownMenu.classList.contains('show')) {
-              var bsDropdown = new bootstrap.Dropdown(otherDropdown);
-              bsDropdown.hide();
-            }
+  dropdowns.forEach(function(dropdown) {
+    var bsDropdown = new bootstrap.Dropdown(dropdown);
+
+    dropdown.addEventListener('click', function() {
+      dropdowns.forEach(function(otherDropdown) {
+        if (otherDropdown !== dropdown) {
+          var dropdownMenu = otherDropdown.nextElementSibling;
+          if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+            bsDropdown.hide();
           }
-        });
+        }
       });
     });
   });
+});
 </script>

@@ -63,9 +63,24 @@ class CartsController < ApplicationController
   end
 
   def checkout
-    # @cart_items = current_cart.items
-    # @subtotal = current_cart.subtotal
-    # @tax = current_cart.tax
-    # @total = current_cart.total
+    if logged_in?
+      @cart_items = Cart.where(user_id: current_user.id).includes(:product)
+      @subtotal = @cart_items.sum { |item| item.product.price * 1 }
+
+      currency = "CAD"
+      tax_rate = TaxRate.find_by(currency_code: currency)&.tax_percentage || 0
+      @tax = (@subtotal * tax_rate / 100).round(2)
+      @total = (@subtotal + @tax).round(2)
+    else
+      product_ids = session[:cart] || []
+      @cart_items = Product.where(id: product_ids)
+      @subtotal = @cart_items.sum { |item| item[:price] * 1 }
+
+      currency = "CAD"
+      tax_rate = TaxRate.find_by(currency_code: currency)&.tax_percentage || 0
+
+      @tax = (@subtotal * tax_rate / 100).round(2)
+      @total = (@subtotal + @tax).round(2)
+    end
   end
 end
